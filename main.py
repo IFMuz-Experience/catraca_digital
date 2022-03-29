@@ -1,29 +1,77 @@
 import cv2
+import imutils
+import socketio
+import time
+from pyzbar import pyzbar
+
 
 cap = cv2.VideoCapture(0)
 
-detector = cv2.QRCodeDetector()
+sio = socketio.Client()
+last_code = ""
 
-while True:
 
-	is_ok, img = cap.read()
+def release_ratchet():
+	...
+
+def access_denied():
+	...
+
+@sio.event
+def connect():
+    print("I'm connected!")
+
+@sio.event
+def connect_error(data):
+    print("The connection failed!")
+
+@sio.event
+def disconnect():
+    print("I'm disconnected!")
+
+@sio.on("return-in")
+def on_message(data):
+	print(data)
+
+def make_request( code ):
+	sio.emit("get-in", {'ra': code})
 	
-	if is_ok:
-		data, bbox, _ = detector.detectAndDecode(img)
+def main():
+	while True:
+
+		is_ok, img = cap.read()
 		
-		if bbox is not None:
-			#for i in range(len(bbox)):
-			#	cv2.line(img, tuple(bbox[i][0]), tuple(bbox[(i+1) % len(bbox[0])]), color=(255, 0, 255), thickness = 2)
+		if is_ok:
+			
+			img = imutils.resize(img, 400)
+			
+			qrcodes = pyzbar.decode(img)
+			
+			for qrcode in qrcodes:
+				(x, y, w, h) = qrcode.rect
+				cv2.rectangle(img, (x,y), (x+w,y+h), (0, 255, 0), 2)
 				
-			if data:
-				print("data: ", data)	
-	
-		cv2.imshow("qrcode detector", img)
-		if cv2.waitKey(1) == ord("q"):
+				qrcodedata = qrcode.data.decode("utf-8")
+				qrcodetype = qrcode.type
+				
+				text = f"{qrcodedata}"
+				
+				make_request(text)
+				
+				cv2.putText(img, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+				
+			
+			cv2.imshow("qrcode detector", img)
+			if cv2.waitKey(1) == ord("q"):
+				break
+		else:
+			print("Erro ao iniciar captura.")
 			break
-	else:
-		print("Erro ao iniciar captura.")
-		break
-		
+
+if __name__ == "__main__":
+	sio.connect('https://1992-200-131-11-6.ngrok.io/')
+
+	main()
+
 cap.release()
 cv2.destroyAllWindows()
