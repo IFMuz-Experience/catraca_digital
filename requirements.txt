@@ -1,3 +1,12 @@
+bidict==0.22.0
+certifi==2021.10.8
+charset-normalizer==2.0.12
+idna==3.3
+imutils==0.5.4
 numpy==1.22.3
 opencv-contrib-python==4.5.5.64
 opencv-python==4.5.5.64
+python-engineio==4.3.1
+python-socketio==5.5.2
+pyzbar==0.1.9
+urllib3==1.26.9
