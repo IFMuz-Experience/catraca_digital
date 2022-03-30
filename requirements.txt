@@ -9,5 +9,6 @@ opencv-python==4.5.5.64
 python-engineio==4.3.1
 python-socketio==5.5.2
 pyzbar==0.1.9
+requests==2.27.1
 RPi.GPIO==0.7.1
 urllib3==1.26.9
