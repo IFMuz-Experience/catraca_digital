@@ -1,12 +1,12 @@
 import RPi.GPIO as GPIO
 import time
 
-buzzer = 17
-access_denied_led = 27
-access_granted_led = 22
-locked_led = 23
-unlocked_led = 24
-lock_gpio = 25
+buzzer = 11
+access_denied_led = 13
+access_granted_led = 15
+locked_led = 16
+unlocked_led = 18
+lock_gpio = 22
 
 
 def close():
@@ -55,20 +55,22 @@ def lock():
 
 
 def config_gpio():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(buzzer, GPIO.OUT)
-    GPIO.setup(access_denied_led, GPIO.OUT)
-    GPIO.setup(access_granted_led, GPIO.OUT)
-    GPIO.setup(locked_led, GPIO.OUT)
-    GPIO.setup(unlocked_led, GPIO.OUT)
-    GPIO.setup(lock_gpio, GPIO.OUT)
-
-    GPIO.output(buzzer, GPIO.LOW)
-    GPIO.output(access_denied_led, GPIO.LOW)
-    GPIO.output(access_granted_led, GPIO.LOW)
-    GPIO.output(locked_led, GPIO.LOW)
-    GPIO.output(unlocked_led, GPIO.HIGH)
-    GPIO.output(lock_gpio, GPIO.LOW)
+	GPIO.cleanup()
+	
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(buzzer, GPIO.OUT)
+	GPIO.setup(access_denied_led, GPIO.OUT)
+	GPIO.setup(access_granted_led, GPIO.OUT)
+	GPIO.setup(locked_led, GPIO.OUT)
+	GPIO.setup(unlocked_led, GPIO.OUT)
+	GPIO.setup(lock_gpio, GPIO.OUT) 
+	
+	GPIO.output(buzzer, GPIO.LOW)
+	GPIO.output(access_denied_led, GPIO.LOW)
+	GPIO.output(access_granted_led, GPIO.LOW)
+	GPIO.output(locked_led, GPIO.LOW)
+	GPIO.output(unlocked_led, GPIO.HIGH) 
+	GPIO.output(lock_gpio, GPIO.LOW)
     
     
 def end_gpio():
