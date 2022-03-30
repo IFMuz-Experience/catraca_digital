@@ -1,12 +1,12 @@
 import RPi.GPIO as GPIO
 import time
 
-buzzer = None
-access_denied_led = None
-access_granted_led = None
-locked_led = None
-unlocked_led = None
-lock_gpio = None
+buzzer = 17
+access_denied_led = 27
+access_granted_led = 22
+locked_led = 23
+unlocked_led = 24
+lock_gpio = 25
 
 
 def close():
@@ -55,7 +55,7 @@ def lock():
 
 
 def config_gpio():
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(buzzer, GPIO.OUT)
     GPIO.setup(access_denied_led, GPIO.OUT)
     GPIO.setup(access_granted_led, GPIO.OUT)
@@ -69,3 +69,7 @@ def config_gpio():
     GPIO.output(locked_led, GPIO.LOW)
     GPIO.output(unlocked_led, GPIO.HIGH)
     GPIO.output(lock_gpio, GPIO.LOW)
+    
+    
+def end_gpio():
+ 	GPIO.cleanup()
